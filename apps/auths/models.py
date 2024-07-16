@@ -1,7 +1,7 @@
 # Django
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import (
-    AbstractBaseUser, PermissionsMixin
+    AbstractBaseUser, PermissionsMixin, Group, Permission,
 )
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -11,7 +11,7 @@ class ClientManager(BaseUserManager):
     """Manager for Clients."""
 
     def create_user(
-        self, email: str, username: str, password: str, cash: int
+        self, email: str, username: str, password: str
     ) -> "Client":
         """Registration user."""
 
@@ -55,14 +55,24 @@ class Client(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         max_length=20, verbose_name="имя пользователя", unique=True
     )
-    is_active = models.BooleanField(
-        default=False, verbose_name="активность"
-    )
+    # is_active = models.BooleanField(
+    #     default=False, verbose_name="активность"
+    # )
     is_superuser = models.BooleanField(
         default=False, verbose_name="администратор"
     )
-    is_staff = models.BooleanField(
-        default=False, verbose_name="менеджер"
+    # is_staff = models.BooleanField(
+    #     default=False, verbose_name="менеджер"
+    # )
+    groups = models.ManyToManyField(
+        Group,
+        related_name="client_set",
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name="client_permissions_set",
+        blank=True
     )
 
     USERNAME_FIELD = "username"

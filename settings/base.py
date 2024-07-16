@@ -17,6 +17,9 @@ DEBUG = config("DEBUG", cast=bool)
 ALLOWED_HOSTS = [config("VIRTUAL_IP")]
 
 INSTALLED_APPS = [
+    # Apps
+    "auths.apps.AuthsConfig",
+    "weather.apps.WeatherConfig",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -24,9 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Apps
-    "auths.apps.AuthsConfig",
-    "weather.apps.WeatherConfig",
     # Rest Framework
     "rest_framework",
     "rest_framework_simplejwt",
