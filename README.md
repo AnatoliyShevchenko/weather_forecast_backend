@@ -29,10 +29,8 @@
     - DB_HOST = "127.0.0.1" или имя контейнера
     - DB_PORT = "5432"
     - 
-    - # HOST
     - VIRTUAL_IP = "*"
     - 
-    - # Weather API
     - API_KEY = "ключ API"
     - API_HOST = "http://api.weatherapi.com/v1"
 
