@@ -3,6 +3,8 @@ from pathlib import Path
 import sys
 import os
 from datetime import timedelta
+import logging
+from logging.config import dictConfig
 
 # Third-Party
 from decouple import config
@@ -13,6 +15,8 @@ sys.path.append(os.path.join(BASE_DIR, "apps"))
 
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool)
+API_HOST = config("API_HOST")
+API_KEY = config("API_KEY")
 
 ALLOWED_HOSTS = [config("VIRTUAL_IP")]
 
@@ -30,14 +34,17 @@ INSTALLED_APPS = [
     # Rest Framework
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_spectacular",
+    "corsheaders",
 ]
-
+AUTH_USER_MODEL = "auths.Client"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -94,7 +101,14 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-    ]
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Weather Forecast",
+    "DESCRIPTION": "Weather Forecast",
+    "VERSION": "0.0.1",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 LANGUAGE_CODE = "en-us"
@@ -108,6 +122,44 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": config("CACHE_REDIS"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "TIMEOUT": 3600,
+        }
+    }
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = ["*"]
+CORS_ALLOW_HEADERS = ["*"]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "formatter": "detailed",
+        },
+    },
+    "formatters": {
+        "detailed": {
+            "format": "%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+dictConfig(LOGGING)
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=10),
