@@ -5,7 +5,7 @@ services:
   web:
     build: .
     container_name: django_web
-    command: gunicorn --bind 0.0.0.0:8000 settings.wsgi
+    command: gunicorn --bind 0.0.0.0:8001 settings.wsgi
     restart: always
     volumes:
       - ./staticfiles:/app/staticfiles
