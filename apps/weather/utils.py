@@ -30,13 +30,13 @@ def format_response(data: dict):
     for item in forecast:
         hours: list[dict] = item.get("hour")
         key = item.get("date")
-        result[key] = {
+        result["forecast"][key] = {
             "sunrise": item["astro"]["sunrise"],
             "sunset": item["astro"]["sunset"]
         }
         for hour in hours:
             time = hour.get("time")
-            result[key][time] = {
+            result["forecast"][key][time] = {
                 "temp_c": hour["temp_c"],
                 "condition": hour["condition"]["text"],
                 "icon": f"https:{hour["condition"]["icon"]}",

@@ -22,15 +22,12 @@
     - SECRET_KEY = "секретный ключ"
     - DEBUG = True или False
     - CACHE_REDIS = "redis://127.0.0.1:6379/1" ну или подставить имя контейнера
-
     - DB_NAME = "название базы данных"
     - DB_USER = "логин базы данных"
     - DB_PASS = "пароль базы данных"
     - DB_HOST = "127.0.0.1" или имя контейнера
     - DB_PORT = "5432"
-    - 
     - VIRTUAL_IP = "*"
-    - 
     - API_KEY = "ключ API"
     - API_HOST = "http://api.weatherapi.com/v1"
 

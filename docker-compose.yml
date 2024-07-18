@@ -1,28 +1,6 @@
 services:
 
-  postgres:
-    image: postgres
-    container_name: forecast-postgres
-    volumes:
-      - db_volume:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "5432:5432"
-    restart: always
-    networks:
-      - forecast
-
-  redis:
-    image: redis
-    container_name: forecast-redis
-    ports:
-      - "6379:6379"
-    restart: always
-    networks:
-      - forecast
+  # не буду пихать сюда постгрес и редис потому что на сервере они уже есть
 
   web:
     build: .
@@ -31,15 +9,6 @@ services:
     restart: always
     volumes:
       - ./staticfiles:/app/staticfiles
-    depends_on:
-      - redis
-      - postgres
-    ports:
-      - "8000:8000"
-
-
-networks:
-  forecast:
-
-volumes:
-  db_volume:
+    env_file:
+      - .env
+    network_mode: "host"
