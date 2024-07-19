@@ -15,17 +15,19 @@ def format_response(data: dict):
     location = data.get("location")
     current = data.get("current")
     forecast: list[dict] = data["forecast"]["forecastday"]
-    result = {}
-    result["location"] = {
-        "city": location["name"],
-        "country": location["country"]
-    }
-    result["current"] = {
-        "temp_c": current["temp_c"],
-        "condition": current["condition"]["text"],
-        "icon": f"https:{current["condition"]["icon"]}",
-        "wind": current["wind_kph"],
-        "humidity": current["humidity"]
+    result = {
+        "location": {
+            "city": location["name"],
+            "country": location["country"]
+        },
+        "current": {
+            "temp_c": current["temp_c"],
+            "condition": current["condition"]["text"],
+            "icon": f"https:{current["condition"]["icon"]}",
+            "wind": current["wind_kph"],
+            "humidity": current["humidity"]
+        },
+        "forecast": {}
     }
     for item in forecast:
         hours: list[dict] = item.get("hour")

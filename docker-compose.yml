@@ -5,10 +5,13 @@ services:
   web:
     build: .
     container_name: django_web
-    command: gunicorn --bind 127.0.0.1:8001 --workers 3 --timeout 120 wsgi:application
+    command: gunicorn --bind 0.0.0.0:8001 --workers 3 --timeout 120 settings.wsgi:application
     restart: always
     volumes:
-      - ./staticfiles:/app/staticfiles
+      - django_volume:/app/staticfiles:rw
     env_file:
       - .env
-    network_mode: "host"
+    network_mode: host
+
+volumes:
+  django_volume:
