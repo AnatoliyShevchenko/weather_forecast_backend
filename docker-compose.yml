@@ -1,0 +1,17 @@
+services:
+
+  # не буду пихать сюда постгрес и редис потому что на сервере они уже есть
+
+  web:
+    build: .
+    container_name: django_web
+    command: gunicorn --bind 0.0.0.0:8001 --workers 3 --timeout 120 settings.wsgi:application
+    restart: always
+    volumes:
+      - django_volume:/app/staticfiles:rw
+    env_file:
+      - .env
+    network_mode: host
+
+volumes:
+  django_volume:
