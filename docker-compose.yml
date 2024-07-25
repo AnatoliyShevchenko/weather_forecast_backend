@@ -1,7 +1,5 @@
 services:
 
-  # не буду пихать сюда постгрес и редис потому что на сервере они уже есть
-
   web:
     build: .
     container_name: django_web
